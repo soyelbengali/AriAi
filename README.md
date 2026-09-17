@@ -4,7 +4,6 @@ Desktop HUD (pywebview + vanilla JS) wired to:
 
 - **LLM / Embeddings** — any OpenAI-compatible `/v1` server (base URL + API key + model, configurable per-endpoint in the "AI Cores" drawer).
 - **STT** — [NVIDIA Canary 180M Flash](https://huggingface.co/nvidia/canary-180m-flash), forced onto CPU (`core/stt.py`), so it runs fine on a laptop with no GPU.
-- **TTS** — [FreeTTS](https://freetts.org) (`core/tts.py`), no API key required. Long responses are auto-chunked under FreeTTS's 1,000-char free-tier limit and played back sequentially.
 - **Web search** — [Ollama Web Search](https://ollama.com) as the primary provider, falling back automatically to [Parallel Search](https://parallel.ai) if Ollama errors or has no key configured (`core/search.py`). The LLM decides when to search via standard OpenAI tool-calling (`core/agent.py`).
 
 ## Install
