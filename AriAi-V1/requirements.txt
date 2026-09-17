@@ -1,0 +1,18 @@
+# --- desktop shell ---
+pywebview>=4.4
+
+# --- HTTP clients (LLM, embeddings, search) ---
+requests>=2.31
+
+# --- STT: Canary 180M Flash (NeMo), CPU only ---
+# NeMo pulls in torch automatically; force the CPU wheel for a laptop-only
+# install, e.g.: pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.1
+nemo_toolkit[asr]>=1.23
+sounddevice>=0.4.6
+soundfile>=0.12.1
+numpy>=1.24
+
+# --- audio playback for TTS output (optional but recommended) ---
+playsound==1.2.2
+piper-tts>=1.6.1

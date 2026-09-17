@@ -1,0 +1,39 @@
+{
+  "llm": {
+    "base_url": "https://api.anyapi.ai/v1",
+    "api_key": "sk-2YjA5hdj5RewcSdGT03tVA",
+    "model": "z-ai/glm-5.3-flash"
+  },
+  "embeddings": {
+    "base_url": "https://api.anyapi.ai/v1",
+    "api_key": "sk-2YjA5hdj5RewcSdGT03tVA",
+    "model": "qwen/text-embedding-v4"
+  },
+  "stt": {
+    "model": "nvidia/canary-180m-flash",
+    "device": "cpu",
+    "record_seconds": 5,
+    "samplerate": 16000
+  },
+  "tts": {
+    "provider": "piper",
+    "voice": "en-US-JennyNeural",
+    "piper_model": "en_US-lessac-medium",
+    "base_url": "https://freetts.org/api",
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "output_format": "mp3"
+  },
+  "search": {
+    "enabled": true,
+    "ollama_api_key": "2a695ba8c04c433cb5dfed648bac5af5.E2VbKg2A5fJbVXHh0a3x3E23",
+    "parallel_api_key": "oOHvPr-_ZysU7EDKrx8kll58RW52AO9rqtap9hWJ",
+    "max_results": 5
+  },
+  "voice_output_enabled": false,
+  "voice_input_enabled": true,
+  "conversation": {
+    "enabled": false,
+    "window_seconds": 5
+  }
+}

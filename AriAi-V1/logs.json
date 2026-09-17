@@ -1,0 +1,12 @@
+[
+  {
+    "id": "log-init",
+    "timestamp": "",
+    "command": "System Ignition Sequence Complete",
+    "spoken_text": "All subroutines loaded, sir. Ari mainframe is online.",
+    "markdown_text": "### Ari Sub-System AriAI Prime Active\n\nWelcome back, sir.\n\nType a command or press the holographic microphone to dictate tasks or search parameters.",
+    "google_search_performed": false,
+    "grounding_sources": [],
+    "actions_executed": []
+  }
+]

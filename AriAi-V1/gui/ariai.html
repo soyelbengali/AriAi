@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="../AriAIlogo.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AriAI — System Prime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ariai.css">
+<script src="https://js.puter.com/v2/"></script>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ============ AMBIENT BG ============ -->
+  <div class="ambient-top"></div>
+
+  <!-- ============ TOPBAR ============ -->
+  <header class="topbar">
+    <div class="brand-block">
+      <h1 class="brand-name">AriAI <span class="brand-tag">SYSTEM PRIME</span></h1>
+      <p class="brand-meta">
+        <span>Core Host Location</span>
+        <span class="dot-sep">•</span>
+        <span>California</span>
+        <span class="dot-sep">•</span>
+        <span id="clock" class="clock-value">00:00:00</span>
+        <span class="dot-sep">•</span>
+        <span class="badge-telemetry"><span class="pulse-dot"></span>active telemetry</span>
+      </p>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-cores" id="coresBtn">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg>
+        AI Cores Settings
+      </button>
+      <div class="stat">
+        <div class="stat-label">Neural Latency</div>
+        <div class="stat-value green"><span class="ping-dot"></span>12ms</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Auto-Efficiency</div>
+        <div class="stat-value purple">98.4%</div>
+      </div>
+      <div class="avatar">A</div>
+    </div>
+  </header>
+
+  <!-- ============ CORES CONFIG MODAL (popup) ============ -->
+  <div class="overlay" id="coresOverlay">
+    <div class="cores-modal-panel">
+      <div class="cores-drawer-header">
+        <div class="card-title">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><polygon points="12 3 21 8 12 13 3 8"/><polyline points="3 13 12 18 21 13"/></svg>
+          AriAI CORES &amp; ROUTING CONTROLLER
+        </div>
+        <button class="icon-btn" id="coresClose" title="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="16" height="16"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+        </button>
+      </div>
+
+      <div class="cores-tabs" id="coresTabs">
+        <button class="cores-tab active" data-tab="ai" type="button"><span class="cores-tab-index">01</span>AI Cores</button>
+        <button class="cores-tab" data-tab="voice" type="button"><span class="cores-tab-index">02</span>Voice / TTS</button>
+        <button class="cores-tab" data-tab="search" type="button"><span class="cores-tab-index">03</span>Search</button>
+      </div>
+
+      <!-- TAB: AI (LLM + Embeddings) -->
+      <div class="cores-tabpanel active" id="tab-ai">
+        <div class="tab-intro">
+          <span class="tab-kicker">Core routing</span>
+          <div><h2>Intelligence endpoints</h2><p>Set the models Ari uses for answers and semantic memory.</p></div>
+        </div>
+        <div class="cores-grid">
+          <div class="field">
+            <label class="field-label">LLM Base URL (OpenAI-compatible)</label>
+            <input class="field-input" id="llmBaseUrlInput" type="text" placeholder="https://api.openai.com/v1">
+          </div>
+          <div class="field">
+            <label class="field-label">LLM API Key</label>
+            <input class="field-input" id="llmApiKeyInput" type="password" placeholder="Enter API key…">
+          </div>
+          <div class="field">
+            <label class="field-label">LLM Model</label>
+            <div class="field-inline">
+              <input class="field-input" id="llmModelInput" list="llmModelList" type="text" placeholder="gpt-4o-mini">
+              <datalist id="llmModelList"></datalist>
+              <button class="icon-btn" id="llmModelRefreshBtn" title="Fetch model list">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Embeddings Base URL</label>
+            <input class="field-input" id="embedBaseUrlInput" type="text" placeholder="https://api.openai.com/v1">
+          </div>
+          <div class="field">
+            <label class="field-label">Embeddings API Key</label>
+            <input class="field-input" id="embedApiKeyInput" type="password" placeholder="Enter API key…">
+          </div>
+          <div class="field">
+            <label class="field-label">Embeddings Model</label>
+            <div class="field-inline">
+              <input class="field-input" id="embedModelInput" list="embedModelList" type="text" placeholder="text-embedding-3-small">
+              <datalist id="embedModelList"></datalist>
+              <button class="icon-btn" id="embedModelRefreshBtn" title="Fetch model list">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: VOICE (STT + TTS + conversation mode) -->
+      <div class="cores-tabpanel" id="tab-voice">
+        <div class="tab-intro">
+          <span class="tab-kicker">Voice interface</span>
+          <div><h2>Listening and speech</h2><p>Tune Ari’s microphone window and spoken response profile.</p></div>
+        </div>
+        <div class="cores-grid">
+          <div class="field">
+            <label class="field-label">Speech-to-Text Engine</label>
+            <input class="field-input" id="sttModelInput" type="text" value="Canary 180M Flash — CPU (local)" disabled>
+          </div>
+          <div class="field">
+            <label class="field-label">Mic Recording Length (seconds)</label>
+            <input class="field-input" id="sttSecondsInput" type="number" min="2" max="30" value="6">
+          </div>
+          <div class="field">
+            <label class="field-label">Follow-up Listening Window (seconds)</label>
+            <input class="field-input" id="conversationSecondsInput" type="number" min="2" max="15" value="5">
+          </div>
+
+          <div class="field">
+            <label class="field-label">TTS Provider</label>
+            <select class="field-select" id="ttsProviderInput">
+              <option value="puter">Puter (browser TTS)</option>
+              <option value="piper">Piper (local fallback)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label">TTS Voice</label>
+            <input class="field-input" id="ttsVoiceInput" type="text" placeholder="Joanna">
+          </div>
+          <div class="field">
+            <label class="field-label">Piper Voice Model</label>
+            <input class="field-input" id="piperModelInput" type="text" placeholder="en_US-lessac-medium">
+          </div>
+
+          <div class="field cores-checkbox-field">
+            <label class="checkbox-wrap">
+              <input type="checkbox" id="voiceOutputToggle" checked>
+              <span class="checkbox-box"></span>
+              <span class="checkbox-text">
+                <span class="checkbox-title">Voice Output (TTS)</span>
+                <span class="checkbox-sub">Ari speaks responses aloud</span>
+              </span>
+            </label>
+          </div>
+          <div class="field cores-checkbox-field">
+            <label class="checkbox-wrap">
+              <input type="checkbox" id="voiceInputToggle" checked>
+              <span class="checkbox-box"></span>
+              <span class="checkbox-text">
+                <span class="checkbox-title">Voice Input (STT)</span>
+                <span class="checkbox-sub">Mic dictation via Canary 180M Flash</span>
+              </span>
+            </label>
+          </div>
+          <div class="field cores-checkbox-field">
+            <label class="checkbox-wrap">
+              <input type="checkbox" id="conversationToggle" checked>
+              <span class="checkbox-box"></span>
+              <span class="checkbox-text">
+                <span class="checkbox-title">Conversation Mode</span>
+                <span class="checkbox-sub">Keep listening for a follow-up after Ari replies</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: SEARCH -->
+      <div class="cores-tabpanel" id="tab-search">
+        <div class="tab-intro">
+          <span class="tab-kicker">Grounding layer</span>
+          <div><h2>Live web search</h2><p>Choose whether Ari can verify answers against current web sources.</p></div>
+        </div>
+        <div class="cores-grid">
+          <div class="field cores-checkbox-field">
+            <label class="checkbox-wrap">
+              <input type="checkbox" id="searchToggle" checked>
+              <span class="checkbox-box"></span>
+              <span class="checkbox-text">
+                <span class="checkbox-title">
+                  <svg class="icon-sm" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8z"/></svg>
+                  Live Web Grounding
+                </span>
+                <span class="checkbox-sub">Ollama Web Search, falling back to Parallel Search</span>
+              </span>
+            </label>
+          </div>
+          <div class="field">
+            <label class="field-label">Ollama Web Search API Key</label>
+            <input class="field-input" id="ollamaSearchKeyInput" type="password" placeholder="Enter API key…">
+          </div>
+          <div class="field">
+            <label class="field-label">Parallel Search API Key (fallback)</label>
+            <input class="field-input" id="parallelSearchKeyInput" type="password" placeholder="Enter API key…">
+          </div>
+        </div>
+      </div>
+
+      <div class="cores-footer">
+        <div class="cores-hint" id="coresHint"></div>
+        <button class="btn-primary-light" id="coresSave">Verify &amp; Lock Core</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DASHBOARD GRID ============ -->
+  <main class="dashboard">
+
+    <!-- ===== MAIN COLUMN ===== -->
+    <section class="col col-mid">
+
+      <!-- AriHUD -->
+      <div class="core-panel" id="ariHud">
+        <div class="core-panel-header">
+          <div class="core-panel-header-left">
+            <svg class="icon-spin-slow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="6" width="12" height="12" rx="2"/><line x1="2" y1="9" x2="6" y2="9"/><line x1="2" y1="15" x2="6" y2="15"/><line x1="18" y1="9" x2="22" y2="9"/><line x1="18" y1="15" x2="22" y2="15"/><line x1="9" y1="2" x2="9" y2="6"/><line x1="15" y1="2" x2="15" y2="6"/><line x1="9" y1="18" x2="9" y2="22"/><line x1="15" y1="18" x2="15" y2="22"/></svg>
+            <span class="mono-label-sm">AriAI Intel Systems v8.4_Prime</span>
+          </div>
+          <button class="btn-vocal" id="vocalBtn" title="Toggle vocal output">
+            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg>
+            <span id="vocalLabel">VOCAL ACTIVE</span>
+          </button>
+        </div>
+
+        <!-- Holographic ring -->
+        <div class="hud-ring-wrap" id="hudRingWrap">
+          <!-- Ripple rings injected by JS -->
+          <svg class="hud-svg" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" class="hud-track" stroke-width="1.5"/>
+            <circle cx="50" cy="50" r="42" fill="none" class="hud-arc" stroke-width="2.5"
+                    stroke-dasharray="250 15" stroke-dashoffset="0" id="hudArc"/>
+            <circle cx="50" cy="50" r="35" fill="none" class="hud-tick" stroke-width="1"
+                    stroke-dasharray="4 6"/>
+          </svg>
+          <button class="mic-core" id="micBtn">
+            <div class="mic-inner-ring"></div>
+            <!-- Icon injected by JS based on status -->
+            <svg class="mic-icon" id="micIcon" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.6">
+              <rect x="9" y="2" width="6" height="11" rx="3"/>
+              <path d="M5 11a7 7 0 0014 0"/>
+              <line x1="12" y1="18" x2="12" y2="22"/>
+            </svg>
+            <span class="mic-label" id="micLabel">INSTRUCT</span>
+          </button>
+        </div>
+
+        <div class="core-status" id="coreStatus">ARI CORE ONLINE — AWAITING SIR'S INPUT</div>
+        <div class="core-quote" id="coreQuote">"Awaiting command, sir. Press central core or provide instruction."</div>
+      </div>
+
+      <div class="card console-card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 12 7 12 9 6 13 18 16 12 22 12"/></svg>
+            INTELLIGENCE DISPLAY CONSOLE
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="icon-btn" id="expandResponseBtn" title="Expand" style="display:none">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="14" height="14"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            </button>
+            <span class="badge-pill outline" id="consoleLinkBadge">STABLE DIRECT LINK</span>
+          </div>
+        </div>
+
+        <!-- thinking spinner banner -->
+        <div class="thinking-banner" id="thinkingBanner" style="display:none">
+          <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M12 2a10 10 0 0 1 0 20"/></svg>
+          CALCULATING CORRELATION…
+        </div>
+
+        <!-- search grounding banner -->
+        <div class="search-banner" id="searchBanner" style="display:none">
+          <span class="search-dot"></span>
+          <span id="searchBannerLabel">WEB GROUNDING ACTIVE</span>
+        </div>
+
+        <!-- Response body -->
+        <div class="console-body" id="consoleBody">
+          <div class="console-empty" id="consoleEmpty">
+            <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+            <div class="console-title">Telemetry display is sterile, sir.</div>
+            <div class="console-sub">Initiate speech verification matrix or manual entry.</div>
+          </div>
+          <div class="console-markdown" id="consoleMarkdown" style="display:none"></div>
+        </div>
+
+        <!-- Grounding sources -->
+        <div class="grounding-section" id="groundingSection" style="display:none">
+          <div class="grounding-header">SEARCH GROUNDING CITATIONS (<span id="groundingCount">0</span>)</div>
+          <div class="grounding-list" id="groundingList"></div>
+        </div>
+
+        <!-- History logs -->
+        <div class="history-section">
+          <div class="history-header">
+            <span class="history-label">COMMAND HISTORY LOGS</span>
+            <button class="btn-ghost-xs" id="clearLogsBtn" style="display:none">PURGE CACHE</button>
+          </div>
+          <div class="history-list" id="historyList"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ============ SUMMON CONSOLE BUTTON ============ -->
+  <button class="summon-btn" id="summonBtn">
+    <span class="pulse-dot-sm"></span>
+    Summon Console
+    <span class="key-badge">/</span>
+  </button>
+
+  <!-- ============ COMMAND PALETTE OVERLAY ============ -->
+  <div class="overlay" id="commandOverlay">
+    <div class="command-panel">
+      <div class="command-header">
+        <div class="command-header-left">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8z"/></svg>
+          <span class="mono-label">AriAI COMMAND CHANNELS</span>
+        </div>
+        <span class="badge-pill">ESC TO ABORT</span>
+      </div>
+      <div class="command-input-wrap">
+        <input class="command-input" id="commandInput" type="text"
+               placeholder="Deploy automated search analysis, complete routine, review goals…"
+               autocomplete="off">
+      </div>
+      <div class="command-footer">
+        <div class="recommended-group">
+          <span class="recommended-label">RECOMMENDED:</span>
+          <button class="pill" data-fill="Sweep pending goals, clean up completed, search latest space breakthrough">Automated Sweep Action</button>
+          <button class="pill" data-fill="Search the web for leading technology headlines today">Tech Intel Brief</button>
+        </div>
+        <button class="btn-transmit" id="transmitBtn">
+          <span id="transmitLabel">TRANSMIT COMMAND</span>
+          <svg class="spin" id="transmitSpin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" style="display:none"><path d="M12 2a10 10 0 0 1 0 20"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ EXPANDED RESPONSE MODAL ============ -->
+  <div class="overlay" id="responseModal">
+    <div class="response-modal-panel">
+      <div class="response-modal-header">
+        <div style="display:flex;align-items:center;gap:8px">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="2 12 7 12 9 6 13 18 16 12 22 12"/></svg>
+          <span class="mono-label">ARI INTELLIGENCE RESPONSE</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="btn-vocal-sm" id="modalReadAloud">
+            <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7"/></svg>
+            Read Aloud
+          </button>
+          <button class="icon-btn" id="responseModalClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" width="16" height="16"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="response-modal-body">
+        <div class="search-banner" id="modalSearchBanner" style="display:none">
+          <span class="search-dot"></span>
+          <span id="modalSearchBannerLabel">WEB GROUNDING ACTIVE</span>
+        </div>
+        <div class="modal-markdown" id="modalMarkdown"></div>
+        <div class="modal-grounding" id="modalGrounding" style="display:none">
+          <div class="grounding-header">SEARCH GROUNDING CITATIONS (<span id="modalGroundingCount">0</span>)</div>
+          <div class="grounding-grid" id="modalGroundingList"></div>
+        </div>
+      </div>
+      <div class="response-modal-footer">
+        <span class="mono-label" style="color:var(--text-tertiary)">ARIAI HUD PRO ENGINE v8.4</span>
+        <button class="btn-primary-light" id="responseModalAck">Acknowledge</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="ariai.js"></script>
+</body>
+</html>
