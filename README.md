@@ -57,7 +57,5 @@ Click **AI Cores Settings** in the topbar to open the settings as a popup
 
 - Canary 180M Flash is loaded lazily on first use and kept warm in memory;
   the very first transcription will be a few seconds slower than the rest.
-- FreeTTS's free tier caps at 1,000 characters per request — `core/tts.py`
-  chunks longer text on sentence boundaries automatically.
 - The LLM and embeddings endpoints are independently configurable, so you
   can point chat at one provider and embeddings at a cheaper/local one.
